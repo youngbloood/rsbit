@@ -72,3 +72,46 @@ impl BitOperation for &mut u8 {
         **self = **self & u8::MAX | flag;
     }
 }
+
+impl BitOperation for &mut i8 {
+    fn set_0(&mut self, pos: u8) {
+        if pos >= 8 {
+            return;
+        }
+        let flag = 1 << pos;
+        // pos位是0，直接返回
+        if flag != **self & flag {
+            return;
+        }
+        // pos位是1，将其置为0
+        **self = **self & (!flag);
+    }
+
+    fn set_1(&mut self, pos: u8) {
+        if pos >= 8 {
+            return;
+        }
+        let flag = 1 << pos;
+        // pos位是1，直接返回
+        if flag == **self & flag {
+            return;
+        }
+        // pos位是0，将其置为1
+        **self = **self & 0b1111_1111u8 as i8 | flag;
+    }
+
+    fn set_inverse(&mut self, pos: u8) {
+        if pos >= 8 {
+            return;
+        }
+        let flag = 1 << pos;
+        // pos位为1，将其置为0
+        if flag == **self & flag {
+            // pos位是1，将其置为0
+            **self = **self & (!flag);
+            return;
+        }
+        // pos位是0，将其置为1
+        **self = **self & 0b1111_1111u8 as i8 | flag;
+    }
+}
