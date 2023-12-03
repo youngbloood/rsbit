@@ -115,3 +115,23 @@ impl BitOperation for &mut i8 {
         **self = **self & 0b1111_1111u8 as i8 | flag;
     }
 }
+
+impl BitOperation for &mut char {
+    fn set_0(&mut self, pos: u8) {
+        let mut c = **self as u8;
+        (&mut c).set_0(pos);
+        **self = c as char;
+    }
+
+    fn set_1(&mut self, pos: u8) {
+        let mut c = **self as u8;
+        (&mut c).set_1(pos);
+        **self = c as char;
+    }
+
+    fn set_inverse(&mut self, pos: u8) {
+        let mut c = **self as u8;
+        (&mut c).set_inverse(pos);
+        **self = c as char;
+    }
+}
