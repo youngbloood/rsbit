@@ -30,6 +30,29 @@ pub trait BitOperation {
     fn set_inverse(&mut self, pos: u8);
 }
 
+// The BitFlagOperation of bit
+pub trait BitFlagOperation {
+    /// Check the pos bit value is 0;
+    /// The pos must be between 0 to 7;
+    /// # Examples
+    ///
+    /// 1010_1000
+    ///
+    /// If the pos is 1, it will return true
+    /// If the pos is 3, it will return false
+    fn is_0(&self, pos: u8) -> bool;
+
+    /// Check the pos bit value is 1;
+    /// The pos must be between 0 to 7;
+    /// # Examples
+    ///
+    /// 1010_1000
+    ///
+    /// If the pos is 1, it will return false
+    /// If the pos is 3, it will return true
+    fn is_1(&self, pos: u8) -> bool;
+}
+
 impl BitOperation for &mut u8 {
     fn set_0(&mut self, pos: u8) {
         if pos >= 8 {
@@ -73,6 +96,51 @@ impl BitOperation for &mut u8 {
     }
 }
 
+impl BitFlagOperation for &mut u8 {
+    fn is_0(&self, pos: u8) -> bool {
+        !self.is_1(pos)
+    }
+
+    fn is_1(&self, pos: u8) -> bool {
+        if pos >= 8 {
+            return false;
+        }
+        let flag = 1 << pos;
+
+        **self & flag == flag
+    }
+}
+
+impl BitFlagOperation for &u8 {
+    fn is_0(&self, pos: u8) -> bool {
+        !self.is_1(pos)
+    }
+
+    fn is_1(&self, pos: u8) -> bool {
+        if pos >= 8 {
+            return false;
+        }
+        let flag = 1 << pos;
+
+        *self & flag == flag
+    }
+}
+
+impl BitFlagOperation for u8 {
+    fn is_0(&self, pos: u8) -> bool {
+        !self.is_1(pos)
+    }
+
+    fn is_1(&self, pos: u8) -> bool {
+        if pos >= 8 {
+            return false;
+        }
+        let flag = 1 << pos;
+
+        *self & flag == flag
+    }
+}
+
 impl BitOperation for &mut i8 {
     fn set_0(&mut self, pos: u8) {
         if pos >= 8 {
@@ -113,6 +181,51 @@ impl BitOperation for &mut i8 {
         }
         // pos位是0，将其置为1
         **self = **self & 0b1111_1111u8 as i8 | flag;
+    }
+}
+
+impl BitFlagOperation for &mut i8 {
+    fn is_0(&self, pos: u8) -> bool {
+        !self.is_1(pos)
+    }
+
+    fn is_1(&self, pos: u8) -> bool {
+        if pos >= 8 {
+            return false;
+        }
+        let flag = 1 << pos;
+
+        **self & flag == flag
+    }
+}
+
+impl BitFlagOperation for &i8 {
+    fn is_0(&self, pos: u8) -> bool {
+        !self.is_1(pos)
+    }
+
+    fn is_1(&self, pos: u8) -> bool {
+        if pos >= 8 {
+            return false;
+        }
+        let flag = 1 << pos;
+
+        *self & flag == flag
+    }
+}
+
+impl BitFlagOperation for i8 {
+    fn is_0(&self, pos: u8) -> bool {
+        !self.is_1(pos)
+    }
+
+    fn is_1(&self, pos: u8) -> bool {
+        if pos >= 8 {
+            return false;
+        }
+        let flag = 1 << pos;
+
+        *self & flag == flag
     }
 }
 

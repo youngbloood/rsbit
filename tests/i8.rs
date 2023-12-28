@@ -46,3 +46,22 @@ pub fn test_i8_set_inverse() {
     (&mut src).set_inverse(8);
     assert_eq!(9, src);
 }
+
+use rsbit::BitFlagOperation;
+#[test]
+pub fn test_i8_is_0() {
+    let mut src = 0b1000_1010 as u8 as i8;
+    assert_eq!(true, (&mut src).is_0(0));
+    assert_eq!(false, (&mut src).is_0(1));
+    assert_eq!(true, (&mut src).is_0(2));
+    assert_eq!(false, (&mut src).is_0(3));
+}
+
+#[test]
+pub fn test_i8_is_1() {
+    let src = 0b1000_1010 as u8 as i8;
+    assert_eq!(false, src.is_1(0));
+    assert_eq!(true, src.is_1(1));
+    assert_eq!(false, src.is_1(2));
+    assert_eq!(true, src.is_1(3));
+}
